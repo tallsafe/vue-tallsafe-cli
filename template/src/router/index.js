@@ -8,6 +8,8 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '../views/layout/Layout'
+import innerLayout from '../views/layout/innerLayout'
+
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -23,29 +25,77 @@ import Layout from '../views/layout/Layout'
     breadcrumb: false            if false, the item will hidden in breadcrumb(default is true)
   }
 **/
-export const constantRouterMap = [
-  { path: '/login', component: () => import('@/views/login/index'), hidden: true },
-  { path: '*', redirect: '/404', hidden: true},
-  { path: '/404', component: () => import('@/views/404'), hidden: true },
-  {
+export const constantRouterMap = [{
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    hidden: true
+},{
+    path: '*',
+    redirect: '/404',
+    hidden: true
+},{
+    path: '/404',
+    component: () => import('@/views/404'),
+    hidden: true
+},{
     path: '/',
     component: Layout,
-    isHome:true,
+    isHome: true,
     redirect: '/dashboard',
     children: [{
-      path: '/dashboard',
-      name: '首页',
-      component: () => import('@/views/dashboard/index'),
-      meta : {
-        title: '首页',
-        icon: '',
-      }
+        path: '/dashboard',
+        name: '首页',
+        component: () => import('@/views/dashboard/index'),
+        meta: {
+            title: '首页',
+            icon: '',
+        }
+    },{
+        path: "/sys",
+        component: innerLayout,
+        name: "系统管理",
+        meta: {
+            title: "系统管理",
+            icon: ""
+        },
+        children: [{
+            path: "/sys/user",
+            name: "用户管理",
+            component: () => import('@/views/sys/user'),
+            hidden: false,
+            children: [],
+            meta: {
+                title: "用户管理",
+                icon: "icon-CI"
+            }
+        },{
+            path: "/sys/role",
+            name: "角色管理",
+            hidden: false,
+            children: [],
+            component: () => import('@/views/sys/role'),
+            meta: {
+                title: "角色管理",
+                icon: "icon-CI"
+            }
+        }, {
+            path: "/sys/menu",
+            name: "菜单管理",
+            hidden: false,
+            children: [],
+            component: () => import('@/views/sys/menu'),
+            meta: {
+                title: "菜单管理",
+                icon: "icon-CI"
+            }
+        }]
     }]
-  }
-]
+}]
 
 export default new Router({
-  // mode: 'history', //后端支持可开
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
+    // mode: 'history', //后端支持可开
+    scrollBehavior: () => ({
+        y: 0
+    }),
+    routes: constantRouterMap
 })

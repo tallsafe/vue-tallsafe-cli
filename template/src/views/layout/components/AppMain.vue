@@ -9,12 +9,46 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'AppMain',
   computed: {
-    // key() {
-    //   return this.$route.name !== undefined ? this.$route.name + +new Date() : this.$route + +new Date()
-    // }
+    ...mapGetters([
+      'sidebar_opened',
+      'permission_sideRouters'
+    ]),
+  },
+  watch: {
+    sidebar_opened(value){
+      this.isHasSideMenu();
+    },
+    permission_sideRouters(value){
+      this.isHasSideMenu();
+    }
+  },
+  mounted() {
+    // this.isHasSideMenu(this.permission_sideRouters);
+    this.isHasSideMenu();
+  },
+  methods: {
+    isHasSideMenu(){
+      var value = this.permission_sideRouters;
+      var flag = this.sidebar_opened;
+      value===undefined?value = []:value;
+      if(value.length>0){
+        if(flag){
+          this.$el.style.width = 'calc(100% - 250px)';
+          this.$el.style.height = 'calc(100% - 130px)';
+          this.$el.style.margin = '128px 5px 0px 250px';
+        }else{
+          this.$el.style.width = 'calc(100% - 41px)';
+          this.$el.style.margin = '128px 5px 0px 68px';
+        }
+      }else{
+        this.$el.style.width = '100%';
+        this.$el.style.margin = '128px 5px 0px 0px';
+      }
+    },
   }
 }
 </script>
@@ -22,9 +56,12 @@ export default {
 <style scoped>
 .app-main {
   /*50 = navbar  */
-  height: calc(100% - 50px);
-  min-height: calc(100% - 50px);
+  margin:128px 15px 15px 195px;
+  /* padding:20px; */
+  min-height: calc(100% - 130px);
+  width: calc(100% - 250px);
   position: relative;
-  overflow-y: scroll;
+  background-color: #fff;
+  overflow: hidden;
 }
 </style>

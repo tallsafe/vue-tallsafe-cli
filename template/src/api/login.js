@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(username, password) {
   return request({
-    url: '/api/sample/login',
+    url: '/newtallsafe/v2/auth/login',
     method: 'post',
     data: {
       username,
@@ -13,15 +13,22 @@ export function login(username, password) {
 
 export function getInfo(token) {
   return request({
-    url: '/api/sample/userInfo',
+    url: '/newtallsafe/v2/auth/info',
     method: 'get',
     params: { token }
+  })
+}
+export function getDataList(token) {
+  return request({
+    url: '/newtallsafe/v2/sys_role/query',
+    method: 'post',
+    data: { token }
   })
 }
 
 export function logout() {
   return request({
-    url: '/api/sample/logout',
+    url: '/newtallsafe/v2/auth/logout',
     method: 'post'
   })
 }

@@ -1,16 +1,16 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+    <el-form ref="loginForm" :model="loginForm" class="login-form" auto-complete="on" label-position="left">
       <h3 class="title">登录</h3>
       <el-form-item prop="username">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          <i class="iconfont icon-user"></i>
         </span>
         <el-input v-model="loginForm.username" name="username" type="text" auto-complete="on" placeholder="username" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
-          <svg-icon icon-class="password" />
+          <i class="iconfont icon-lock"></i>
         </span>
         <el-input
           :type="pwdType"
@@ -20,7 +20,7 @@
           placeholder="password"
           @keyup.enter.native="handleLogin" />
         <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="pwdType === 'password' ? 'eye' : 'eye-open'" />
+          <i class="iconfont icon-eye"></i>
         </span>
       </el-form-item>
       <el-form-item>
@@ -33,33 +33,13 @@
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
-
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('请输入正确的用户名'))
-      } else {
-        callback()
-      }
-    }
-    const validatePass = (rule, value, callback) => {
-      if (value.length < 5) {
-        callback(new Error('密码不能小于5位'))
-      } else {
-        callback()
-      }
-    }
     return {
       loginForm: {
-        username: 'editor',
-        password: 'editor'
-      },
-      loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePass }]
+        username: 'admin',
+        password: '1234567'
       },
       loading: false,
       pwdType: 'password',
@@ -89,13 +69,16 @@ export default {
           this.$store.dispatch('Login', this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: this.redirect || '/' })
-          }).catch(() => {
-            this.loading = false
+            console.log('successful')
+          }).catch((error) => {
+            this.loading = false;
+            console.log('false');
+            console.log(error);
           })
         } else {
-          console.log('error submit!!')
+          console.log('error submit!!');
           return false
-        }
+        }                
       })
     }
   }

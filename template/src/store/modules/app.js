@@ -6,7 +6,9 @@ const app = {
       opened: !+Cookies.get('sidebarStatus'),
       withoutAnimation: false
     },
-    device: 'desktop'
+    nowHeaderName:"",
+    device: 'desktop',
+    skin:Cookies.get('skin'),
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {
@@ -25,6 +27,13 @@ const app = {
     },
     TOGGLE_DEVICE: (state, device) => {
       state.device = device
+    },
+    SET_NowHeaderName:(state, nowHeaderName)=>{
+        state.nowHeaderName = nowHeaderName
+    },
+    SET_skin:(state, skin)=>{
+        state.skin = skin;
+        Cookies.set('skin', skin)
     }
   },
   actions: {

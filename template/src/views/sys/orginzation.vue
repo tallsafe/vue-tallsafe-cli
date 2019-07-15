@@ -1,0 +1,12 @@
+<template>
+    <div>
+        <el-tree
+            :data="menuList"
+            :props="menuListTreeProps"
+            node-key="menuId"
+            ref="menuListTree"
+            :default-expand-all="true"
+            show-checkbox>
+        </el-tree>
+    </div>
+</template>

@@ -26,7 +26,7 @@
 
 <script>
 import ScrollPane from '@/components/ScrollPane'
-
+import { mapGetters } from 'vuex'
 export default {
   components: { ScrollPane },
   data() {
@@ -40,7 +40,11 @@ export default {
   computed: {
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
-    }
+    },
+    ...mapGetters([
+      'permission_sideRouters',
+      'sidebar_opened'
+    ]),
   },
   watch: {
     $route() {
@@ -53,12 +57,39 @@ export default {
       } else {
         document.body.removeEventListener('click', this.closeMenu)
       }
-    }
+    },
+    permission_sideRouters(value){
+      this.isHasSideMenu();
+    },
+    sidebar_opened(value){
+      this.isHasSideMenu();
+    },
   },
   mounted() {
-    this.addViewTags()
+    this.addViewTags();
+    this.isHasSideMenu();
   },
   methods: {
+    isHasSideMenu(){
+      console.log(this.permission_sideRouters,'this.permission_sideRouters');
+      var value = this.permission_sideRouters;
+      var flag = this.sidebar_opened;
+      value===undefined?value = []:value;
+      if(value.length>0){
+        // this.$el.style.width = 'calc(100% - 180px)';
+        // this.$el.style.left = '180px';
+        if(flag){
+          this.$el.style.width = 'calc(100% - 250px)';
+          this.$el.style.left = '250px';
+        }else{
+          this.$el.style.width = 'calc(100% - 68px)';
+          this.$el.style.left = '68px';
+        }
+      }else{
+        this.$el.style.width = '100%';
+        this.$el.style.left = '0';
+      }      
+    },
     isActive(route) {
       return route.path === this.$route.path
     },
@@ -130,7 +161,7 @@ export default {
       } else {
         this.left = left
       }
-      this.top = e.clientY
+      this.top = e.clientY-40;
 
       this.visible = true
       this.selectedTag = tag
@@ -144,45 +175,51 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .tags-view-container {
-  height: 34px;
-  width: 100%;
-  background: #fff;
-  border-bottom: 1px solid #d8dce5;
+  height: 60px;
+  background: #000e38;
+  // border-bottom: 1px solid #d8dce5;
+  border-left:1px solid #376bf0;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+  position:fixed;
+  top:70px;
+  left:250px;
+  right:0;
+  z-index: 1111;
   .tags-view-wrapper {
+    height:100%;
     .tags-view-item {
       display: inline-block;
       position: relative;
       cursor: pointer;
-      height: 26px;
-      line-height: 26px;
-      border: 1px solid #d8dce5;
-      color: #495060;
-      background: #fff;
+      height: 58px;
+      line-height: 58px;
+      border: 1px solid #007eff;
+      color: #c2c3c9;
+      background: #000e38;
       padding: 0 8px;
-      font-size: 12px;
-      margin-left: 5px;
-      margin-top: 4px;
-      &:first-of-type {
-        margin-left: 15px;
-      }
-      &:last-of-type {
-        margin-right: 15px;
-      }
+      font-size: 14px;
+      // margin-left: 5px;
+      // margin-top: 4px;
+      // &:first-of-type {
+      //   margin-left: 15px;
+      // }
+      // &:last-of-type {
+      //   margin-right: 15px;
+      // }
       &.active {
-        background-color: #42b983;
-        color: #fff;
-        border-color: #42b983;
-        &::before {
-          content: '';
-          background: #fff;
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          position: relative;
-          margin-right: 2px;
-        }
+        background-color: #001b6d;
+        // color: #fff;
+        // border-color: #42b983;
+        // &::before {
+        //   content: '';
+        //   background: #fff;
+        //   display: inline-block;
+        //   width: 8px;
+        //   height: 8px;
+        //   border-radius: 50%;
+        //   position: relative;
+        //   margin-right: 2px;
+        // }
       }
     }
   }
@@ -212,7 +249,11 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss">
 //reset element css of el-icon-close
+
 .tags-view-wrapper {
+  .el-scrollbar__wrap{
+    height:75px!important;
+  }
   .tags-view-item {
     .el-icon-close {
       width: 16px;

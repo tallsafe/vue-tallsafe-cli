@@ -8,7 +8,7 @@
 <script>
 
 const version = require('element-ui/package.json').version // element-ui version from node_modules
-const ORIGINAL_THEME = '#409EFF' // default color
+const ORIGINAL_THEME = '#376bf0' // default color
 export default {
   data() {
     return {
@@ -18,6 +18,7 @@ export default {
   },
   watch: {
     theme(val) {
+        this.$store.commit('SET_skin', val)
       const oldVal = this.theme
       if (typeof val !== 'string') return
       const themeCluster = this.getThemeCluster(val.replace('#', ''))
@@ -26,7 +27,7 @@ export default {
         return () => {
           const originalCluster = this.getThemeCluster(ORIGINAL_THEME.replace('#', ''))
           if(this[variable].indexOf('.navbar')===-1){
-            this[variable]+='.headerMenu{background-color:#409eff!important;}.navbar{background-color:#409eff!important;}'
+            this[variable]+='.headerMenu{background-color:#376bf0!important;}.navbar{background-color:#376bf0!important;}'
           }
           const newStyle = this.updateStyle(this[variable], originalCluster, themeCluster)
 
@@ -59,10 +60,10 @@ export default {
         if (typeof innerText !== 'string') return
         style.innerText = this.updateStyle(innerText, originalCluster, themeCluster)
       })
-      this.$message({
-        message: '换肤成功',
-        type: 'success'
-      })
+    //   this.$message({
+    //     message: '换肤成功',
+    //     type: 'success'
+    //   })
     }
   },
 
@@ -138,7 +139,7 @@ export default {
 <style>
 .theme-picker{
   position:absolute!important;
-  right: 90px;
+  right: 200px;
 }
 .theme-picker .el-color-picker__trigger {
   margin-top: 12px;

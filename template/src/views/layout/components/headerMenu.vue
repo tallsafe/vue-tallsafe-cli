@@ -12,6 +12,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import variables from '@/styles/variables.scss'
+import { getHeaderMenu } from '@/api/menu'
 export default {
     name: 'headerMenu',
     computed: {
@@ -22,6 +23,16 @@ export default {
         variables() {
           return variables
         },
+    },
+    created(){
+      let vue = this;
+      if(Window.config.isWebGetMenu){
+        getHeaderMenu().then(res => {
+          this.$store.dispatch('WebGetRoute',{route:res.data,role:vue.roles});
+        }).catch(() => {
+          
+        })
+      }
     },
     methods:{
       selectMenu(index,indexPath){
@@ -35,11 +46,20 @@ export default {
   display: inline;
 }
 .headerMenu{
-  background-color: #409eff;
+  background-color: #376bf0;
+}
+.headerMenu .el-menu-item,.headerMenu .el-menu-item:hover{
+  background-color: inherit;
 }
 .headerMenu .el-menu-item{
-  background-color: inherit;
+  color:#c9d3fa;
+}
+.headerMenu .el-menu-item:hover,.headerMenu .el-menu-item.is-active{
   color:#fff;
+}
+.headerMenu .el-menu-item.is-active{
+  background-color: inherit;
+  border-bottom: 5px solid #ffcc00!important;
 }
 </style>
 

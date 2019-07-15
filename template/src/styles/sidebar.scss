@@ -12,10 +12,10 @@
   .sidebar-container {
     transition: width 0.28s;
     width: $sideBarWidth !important;
-    height: 100%;
-    position: relative;
-    font-size: 0px;
-    top: 0;
+    height: calc(100% - 70px);
+    position: fixed;
+    // font-size: 0px;
+    top: 70px;
     bottom: 0;
     left: 0;
     z-index: 1001;
@@ -69,7 +69,9 @@
     .is-active>.el-submenu__title {
       color: $subMenuActiveText !important;
     }
-
+    .el-menu-item.is-active{
+      background-color: $menuHover !important;
+    }
     & .nest-menu .el-submenu>.el-submenu__title,
     & .el-submenu .el-menu-item {
       min-width: $sideBarWidth !important;
@@ -83,7 +85,7 @@
 
   .hideSidebar {
     .sidebar-container {
-      width: 36px !important;
+      width: 68px !important;
     }
 
     .submenu-title-noDropdown {

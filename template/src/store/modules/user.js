@@ -29,49 +29,39 @@ const user = {
     Login({ commit }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        setToken(username);
-        commit('SET_TOKEN', username);
-        resolve();
-        // login(username, userInfo.password).then(response => {
-        //   const data = response.data
-        //   setToken(data.token)
-        //   commit('SET_TOKEN', data.token)
-        //   resolve()
-        // }).catch(error => {
-        //   reject(error)
-        // })
+        login(username, userInfo.password).then(response => {
+          const data = response;
+          console.log(1,data.token);
+          setToken(data.token)
+          commit('SET_TOKEN', data.token)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
       })
     },
 
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        commit('SET_ROLES', state.token)
-        commit('SET_NAME', state.token)
-        commit('SET_AVATAR', '')
-        resolve({
-          data:{
-            roles: [state.token], 
-            name: state.token,
-            avatar: ""
+        
+        getInfo(state.token).then(response => {
+          const data = response
+          if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+            commit('SET_ROLES', data.roles)
+          } else {
+            reject('getInfo: roles must be a non-null array !')
           }
+          commit('SET_NAME', data.name)
+          commit('SET_AVATAR', data.avatar)
+          //commit('SET_TOKEN', data.token)
+          resolve(response)
+        }).catch(error => {
+          reject(error)
         })
-        // getInfo(state.token).then(response => {
-        //   const data = response.data
-        //   if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-        //     commit('SET_ROLES', data.roles)
-        //   } else {
-        //     reject('getInfo: roles must be a non-null array !')
-        //   }
-        //   commit('SET_NAME', data.name)
-        //   commit('SET_AVATAR', data.avatar)
-        //   resolve(response)
-        // }).catch(error => {
-        //   reject(error)
-        // })
       })
     },
-
+    
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {

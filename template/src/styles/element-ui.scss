@@ -40,6 +40,70 @@
 
 .el-menu--horizontal > .el-menu-item {
   float: left!important;
-  height: 50px!important;
-  line-height: 50px!important;
+  height: 70px!important;
+  line-height: 70px!important;
+}
+
+.el-menu-item i{
+  margin-right:10px;
+  font-size:18px;
+}
+
+.app-wrapper .el-pagination {
+  margin-top: 15px;
+  text-align: right;
+}
+
+
+//element tabs
+.el-tabs__item.is-active{
+  color: #fff;
+  background-color:#032aa0;
+  font-size:18px;
+  font-weight: bold;
+}
+.el-tabs__item:hover {
+  color: #fff;
+  background-color:#032aa0;
+  font-size:18px;
+  font-weight: bold;
+}
+.el-tabs__item {
+  color: #a0a5bd;
+  background-color:#001b6d;
+  font-size:18px;
+}
+
+.el-tabs--card>.el-tabs__header .el-tabs__nav{border:none;}
+.el-tabs--card>.el-tabs__header .el-tabs__item.is-active{border:none;}
+.el-tabs--card>.el-tabs__header .el-tabs__item {border:none;}
+
+//element tree
+.videoTree{
+  background: #000e38;
+  color: #fff;
+  font-size:16px;
+}
+.videoTree .el-tree-node:focus>.el-tree-node__content{
+  background: #032aa0;
+}
+.videoTree .el-tree-node__content:hover{
+  background: #032aa0;
+}
+
+.el-color-picker{
+  height:70px!important;
+  line-height: 90px!important;
+}
+.el-upload,.el-upload-dragger{
+  width:100%;
+}
+
+.searchForm .el-date-editor.el-input,.searchForm .el-date-editor.el-input__inner{
+  width:auto;
+}
+
+.searchForm .dragUpload{
+margin-bottom:24px;
+overflow: hidden;
 }

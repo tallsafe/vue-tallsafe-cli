@@ -1,140 +1,175 @@
 <template>
-  <div class="navbar">
-    <div class="brand lg" v-if="isOpen">韬安信息</div>
-    <div class="brand mini" v-if="!isOpen">韬</div>
-    <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
-    <headerMenu></headerMenu>
-    <el-tooltip content="换肤" effect="dark" placement="bottom">
-      <theme-picker class="right-menu-item hover-effect"/>
-    </el-tooltip>
-    <el-dropdown class="avatar-container" trigger="click">
-      <div class="avatar-wrapper">
-        <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-        <i class="el-icon-caret-bottom"/>
-      </div>
-      <el-dropdown-menu slot="dropdown" class="user-dropdown">
-        <router-link class="inlineBlock" to="/">
-          <el-dropdown-item>
-            Home
-          </el-dropdown-item>
-        </router-link>
-        <el-dropdown-item divided>
-          <span style="display:block;" @click="logout">LogOut</span>
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
-  </div>
+    <div class="navbar">
+        <div class="brand lg" v-if="isOpen">
+            <img src="@/assets/images/header/police.png">
+            <div>
+                <div>图像综合应用</div>
+                <div>管理平台</div>
+            </div>
+        </div>
+        <div class="brand mini" v-if="!isOpen">
+            <img src="@/assets/images/header/police.png">
+        </div>
+        <headerMenu></headerMenu>
+        <el-tooltip content="换肤" effect="dark" placement="bottom">
+            <theme-picker class="right-menu-item hover-effect" ref="ThemePicker"/>
+        </el-tooltip>
+        <div class="avatar-container" trigger="click">
+            <div class="userInfo">
+                <i class="iconfont icon-fullscreen"></i>
+                <i class="iconfont icon-qiehuan"></i>
+                <i class="iconfont icon-folder"></i>
+                <i class="iconfont icon-bell"></i>
+                <el-popover
+                    placement="top"
+                    width="250"
+                    trigger="click"
+                    popper-class="configPopover"
+                    v-model="visible2">
+                    <div class="popTitle">\{{name}}</div>
+                    <div class="popTitle">\{{roles[0].name}}</div>
+                    <div class="el-collapse-item__header">
+                        <span>修改密码</span>
+                        <i class="el-collapse-item__arrow el-icon-arrow-right"></i>
+                    </div>
+                    <div class="el-collapse-item__header">
+                        <span>登出</span>
+                        <i class="el-collapse-item__arrow el-icon-arrow-right"></i>
+                    </div>
+                    <i class="iconfont icon-wo-copy" slot="reference"></i>
+                </el-popover>
+            </div>
+            <!-- <el-dropdown-menu slot="dropdown" class="user-dropdown">
+                <router-link class="inlineBlock" to="/">
+                    <el-dropdown-item>
+                        Home
+                    </el-dropdown-item>
+                </router-link>
+                <el-dropdown-item divided>
+                    <span style="display:block;" @click="logout">LogOut</span>
+                </el-dropdown-item>
+            </el-dropdown-menu> -->
+        </div>
+    </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import ThemePicker from '@/components/ThemePicker'
-import Hamburger from '@/components/Hamburger'
-import headerMenu from './headerMenu.vue'
-export default {
-  data() {
-    return {
-      isOpen:true,
-      theme:""
-    }
-  },
-  components: {
-    Hamburger,
-    ThemePicker,
-    headerMenu
-  },
-  computed: {
-    ...mapGetters([
-      'sidebar',
-      'avatar'
-    ])
-  },
-  methods: {
-    toggleSideBar() {
-      let vue = this;
-      this.$store.dispatch('ToggleSideBar');
-      if(!this.sidebar.opened){
-        this.$el.querySelector('.lg').style.width='36px';
-        setTimeout(function(){
-          vue.isOpen = false;
-        } , 100)
-      }else{
-        this.isOpen = true;
-        setTimeout(function(){
-          vue.$el.querySelector('.lg').style.width='180px';
-        }, 50)
-      }
-    },
-    logout() {
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload() // 为了重新实例化vue-router对象 避免bug
-      })
-    }
-  }
-}
+    import { mapGetters } from "vuex";
+    import ThemePicker from "@/components/ThemePicker";
+    import headerMenu from "./headerMenu.vue";
+    export default {
+        data() {
+            return {
+                isOpen: true,
+                visible2:false,
+                theme: ""
+            };
+        },
+        mounted(){
+            if(this.skin!==''){
+                this.$refs.ThemePicker.theme =this.skin
+            }
+        },
+        components: {
+            ThemePicker,
+            headerMenu
+        },
+        computed: {
+            ...mapGetters(["sidebar", "name", "roles", "avatar",'skin'])
+        },
+        methods: {
+            toSeePopover(){
+                this.visible2 = true;
+            },
+            logout() {
+                this.$store.dispatch("LogOut").then(() => {
+                    location.reload(); // 为了重新实例化vue-router对象 避免bug
+                });
+            }
+        }
+    };
 </script>
 
+<style scoped>
+    .configPopover .popTitle{
+        margin:6px 0!important;
+        font-size:15px;
+        font-weight: bolder;
+    }
+    /* .popoverButton{
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    } */
+</style>
+
 <style rel="stylesheet/scss" lang="scss" scoped>
-.navbar {
-  height: 50px;
-  line-height: 50px;
-  border-radius: 0px !important;
-  background-color: #409eff;
-  display:flex;
-  .brand{
-    display: inline-block;
-    height: 50px;
-    float: left;
-    font-size: 20px;
-    color:#fff;
-    text-align: center;
-    font-weight: bold;
-    transition: width .3s;
-    img{
-      width:36px;
+    .navbar {
+        height: 70px;
+        border-radius: 0px !important;
+        background-color: #376bf0;
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 1111;
+        .brand {
+            display: flex;
+            height: 70px;
+            line-height: 25px;
+            justify-content: left;
+            align-items: center;
+            float: left;
+            font-size: 16px;
+            color: #fff;
+            text-align: center;
+            transition: width 0.3s;
+            img {
+                margin: 0 22px 0 8px;
+            }
+        }
+        .lg {
+            width: 250px;
+        }
+        .mini {
+            width: 68px;
+        }
+        .avatar-container {
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            right: 10px;
+            .avatar-wrapper {
+                cursor: pointer;
+                margin-top: 5px;
+                position: relative;
+                line-height: initial;
+                margin-right: 10px;
+                .user-avatar {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 10px;
+                }
+            }
+            .userInfo{
+                color:#fff;
+                i{
+                    font-size: 24px!important;
+                }
+            }
+            .name {
+                color: #fff;
+                font-size: 0.5em;
+            }
+            .logOutButton {
+                padding: 5px;
+                font-size: 0.5em;
+            }
+        }
     }
-  }
-  .lg{
-    width:180px;
-  }
-  .mini{
-    width:36px;
-  }
-  .hamburger-container {
-    line-height: 58px;
-    height: 50px;
-    float: left;
-    padding: 0 10px;
-  }
-  .screenfull {
-    position: absolute;
-    right: 90px;
-    top: 16px;
-    color: red;
-  }
-  .avatar-container {
-    height: 50px;
-    display: inline-block;
-    position: absolute;
-    right: 35px;
-    .avatar-wrapper {
-      cursor: pointer;
-      margin-top: 5px;
-      position: relative;
-      line-height: initial;
-      .user-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-      }
-      .el-icon-caret-bottom {
-        position: absolute;
-        right: -20px;
-        top: 25px;
-        font-size: 12px;
-      }
-    }
-  }
-}
 </style>
 

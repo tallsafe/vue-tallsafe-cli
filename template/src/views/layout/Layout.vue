@@ -2,13 +2,9 @@
   <div :class="classObj" class="app-wrapper">
     <!-- <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/> -->
     <navbar/>
-    <div class="main-container">
-      <sidebar class="sidebar-container"/>
-      <div class="content">
-        <tags-view/>
-        <app-main/>
-      </div>
-    </div>
+    <tags-view/>
+    <sidebar class="sidebar-container"/>
+    <app-main/>
   </div>
 </template>
 
@@ -55,16 +51,13 @@ export default {
     @include clearfix;
     position: relative;
     height: 100%;
-    width: 100%;
-    overflow: hidden;
+    width: calc(100% + 20px);
+    overflow-y: scroll;
+    background-color: #f1f4f5;
     &.mobile.openSidebar{
       position: fixed;
       top: 0;
     }
-  }
-  .content{
-    width: 100%;
-    height: 100%;
   }
   .drawer-bg {
     background: #000;

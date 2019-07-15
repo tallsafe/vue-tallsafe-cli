@@ -71,11 +71,13 @@ const permission = {
   },
   actions: {
     GenerateSideRouters({ commit, state },data){
+        console.log(state)
       for(let el of state.headRouters){
         if(el.path===data){
           if(!el.hasOwnProperty('children')){
             el.children = [];
           }
+          commit('SET_NowHeaderName', el.name);
           commit('SET_SideRouters', el.children);
           break;
         }
